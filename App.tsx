@@ -1,20 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import HeaderComponent from "./src/components/header/HeaderComponent";
+import { ToastProvider } from "react-native-toast-notifications";
+import Home from "./src/screens/Home/Home";
+// import FaIcon from "react-native-vector-icons/FontAwesome";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ToastProvider>
+      <Home></Home>
+    </ToastProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

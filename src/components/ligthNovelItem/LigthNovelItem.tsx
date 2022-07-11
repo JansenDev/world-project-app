@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { LigthNovel } from "../../domain/models/ligthNovel";
 import { Dimensions } from "react-native";
 import { ToastAndroid } from "react-native";
+// const NotFound = require("../../assets/not_found.jpg");
 
 const screen = Dimensions.get("screen");
 
 function LigthNovelItem(props: LigthNovel) {
+  const [showImage, setShowImage] = useState({
+    showDefault: true,
+    error: false
+  });
+
+  const image = showImage.error
+    ? require("../../assets/not_found.jpg")
+    : { uri: props.image };
+
   return (
     <View
       onTouchEnd={() => {
@@ -16,7 +26,8 @@ function LigthNovelItem(props: LigthNovel) {
       <View style={styles.lnList_book}>
         <Image
           style={styles.lnList_book__image}
-          source={{ uri: props.image }}
+          source={image}
+          onError={() => setShowImage({ showDefault: true, error: true })}
         />
       </View>
       <View style={styles.lnList_title}>
@@ -30,10 +41,12 @@ const onTouchEndBookImage = (title: string) => {
   console.log("Title: " + title);
 };
 
+const imageWith = screen.width / 2.2;
+
 const styles = StyleSheet.create({
   // lnList_container: {},
   lnList_title: {
-    width: screen.width / 2.2,
+    width: imageWith,
     backgroundColor: "#fff",
     flex: 1,
     justifyContent: "center",
@@ -44,16 +57,14 @@ const styles = StyleSheet.create({
     flexWrap: "wrap"
   },
   lnList_book: {
-    width: screen.width / 2.2,
     backgroundColor: "#eee",
-    alignItems: "center",
     paddingBottom: 15,
     paddingTop: 15,
     borderRadius: 5
   },
   lnList_book__image: {
     // aspectRatio:1.5,
-    width: screen.width / 2.2,
+    width: imageWith,
     height: screen.width / 1.8,
     resizeMode: "contain"
   }

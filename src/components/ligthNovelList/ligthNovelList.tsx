@@ -5,7 +5,7 @@ import data from "../../utils/collections";
 import LigthNovelItem from "../ligthNovelItem/LigthNovelItem";
 
 function LigthNovelList() {
-  console.log(data.length);
+  console.log("Books Total: ", data.length);
 
   return (
     <View style={styles.ln_container}>

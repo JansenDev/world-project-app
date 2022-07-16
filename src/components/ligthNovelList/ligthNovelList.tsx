@@ -1,8 +1,7 @@
-import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, ToastAndroid, View } from "react-native";
 import { LigthNovel } from "../../domain/models/ligthNovel";
-import data from "../../utils/collections";
 import LigthNovelItem from "../ligthNovelItem/LigthNovelItem";
+import data from "../../utils/collections";
 
 function LigthNovelList() {
   console.log("Books Total: ", data.length);
@@ -17,6 +16,7 @@ function LigthNovelList() {
         renderItem={({ item, index }) => (
           <LigthNovelItem key={index} {...item} />
         )}
+        onMomentumScrollEnd={()=>ToastAndroid.show("FInal!",1000)}
       />
     </View>
   );
@@ -24,8 +24,8 @@ function LigthNovelList() {
 
 const styles = StyleSheet.create({
   ln_container: {
-    marginBottom: 74,
     marginTop: 15
+    // backgroundColor: "#444"
   },
   ln_columns: {
     justifyContent: "space-evenly",

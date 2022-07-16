@@ -3,7 +3,6 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { LigthNovel } from "../../domain/models/ligthNovel";
 import { Dimensions } from "react-native";
 import { ToastAndroid } from "react-native";
-// const NotFound = require("../../assets/not_found.jpg");
 
 const screen = Dimensions.get("screen");
 
@@ -47,20 +46,22 @@ const styles = StyleSheet.create({
   // lnList_container: {},
   lnList_title: {
     width: imageWith,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     flex: 1,
     justifyContent: "center",
-    borderRadius: 25
+    borderRadius: 25,
   },
   lnList_title__text: {
     textAlign: "center",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    fontWeight:"bold"
+    // color: "#fff",
   },
   lnList_book: {
     backgroundColor: "#eee",
     paddingBottom: 15,
     paddingTop: 15,
-    borderRadius: 5
+    borderRadius: 10
   },
   lnList_book__image: {
     // aspectRatio:1.5,

@@ -7,10 +7,12 @@ import { Dimensions } from "react-native";
 
 const screen = Dimensions.get("screen");
 
-const isTabled = screen.width > 500 ? 30 : 80;
+const isTabled = screen.width > 500;
+const heigthFooter = isTabled ? 30 : 80;
+
 function Home() {
   return (
-    <View style={{ height: "90%", paddingBottom: isTabled }}>
+    <View style={{ height: "90%", paddingBottom: heigthFooter }}>
       <HeaderComponent />
       <LigthNovelList />
       <Footer />

@@ -16,7 +16,7 @@ function LigthNovelList() {
         renderItem={({ item, index }) => (
           <LigthNovelItem key={index} {...item} />
         )}
-        onMomentumScrollEnd={()=>ToastAndroid.show("FInal!",1000)}
+        // onMomentumScrollEnd={()=>ToastAndroid.show("FInal!",1000)}
       />
     </View>
   );

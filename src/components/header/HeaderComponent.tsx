@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Constants from "expo-constants";
-// import Icon from "react-native-vector-icons/glyphmaps/FontAwesome.json";
+import Icon from "react-native-vector-icons/glyphmaps/FontAwesome.json";
 import FaIcon from "react-native-vector-icons/FontAwesome";
 import { useToast } from "react-native-toast-notifications";
-import { ToastAndroid } from "react-native";
+// import { ToastAndroid } from "react-native";
 
 const iconSize = 25;
 const iconColor = "#000";

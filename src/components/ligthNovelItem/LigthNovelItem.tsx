@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { LigthNovel } from "../../domain/models/ligthNovel";
-import { Dimensions } from "react-native";
-import { ToastAndroid } from "react-native";
+import { Dimensions, ToastAndroid } from "react-native";
+import { useNavigate } from "react-router-native";
 
 const screen = Dimensions.get("screen");
 
@@ -36,6 +36,8 @@ function LigthNovelItem(props: LigthNovel) {
   );
 }
 const onTouchEndBookImage = (title: string) => {
+  let navegar = useNavigate();
+
   ToastAndroid.show(title, 2500);
   console.log("Title: " + title);
 };
@@ -49,12 +51,12 @@ const styles = StyleSheet.create({
     // backgroundColor: "#fff",
     flex: 1,
     justifyContent: "center",
-    borderRadius: 25,
+    borderRadius: 25
   },
   lnList_title__text: {
     textAlign: "center",
     flexWrap: "wrap",
-    fontWeight:"bold"
+    fontWeight: "bold"
     // color: "#fff",
   },
   lnList_book: {

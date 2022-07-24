@@ -1,3 +1,4 @@
+import DetailsBook from "../screens/BookDetails/DetailsBook";
 import Home from "../screens/Home/Home";
 
 export const routes: IRoute[] = [
@@ -7,7 +8,7 @@ export const routes: IRoute[] = [
   },
   {
     path: "/details/:book_id",
-    element: <Home />
+    element: <DetailsBook />
   }
 ];
 

@@ -1,4 +1,5 @@
 export interface LigthNovel {
+  id: number;
   titles: string[];
   volumes: string;
   volumes_total: string;

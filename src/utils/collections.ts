@@ -1,5 +1,6 @@
 export default [
   {
+    "id": 1,
     "titles": [
       "Shinchou Yuusha",
       "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
@@ -19,6 +20,7 @@ export default [
     "background": ""
   },
   {
+    "id": 2,
     "titles": [
       "Arifureta",
       "Arifureta Shokugyō de Sekai Saikyō",
@@ -38,6 +40,7 @@ export default [
     "background": ""
   },
   {
+    "id": 3,
     "titles": [
       "Seirei Gensouki",
       "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
@@ -66,6 +69,7 @@ export default [
     "background": ""
   },
   {
+    "id": 4,
     "titles": [
       "Roshidere",
       "TOKIDOKI BOSOTTO RUSSIAN DE DERERU",
@@ -85,6 +89,7 @@ export default [
     "background": "https://i.redd.it/hcuw7hxdu2r81.png"
   },
   {
+    "id": 5,
     "titles": [
       "Yatarato Sasshi ",
       "Yatarato Sasshi no Ii Ore wa, Dokuzetsu Kuudere Bishoujo no Chiisana Dere mo Minogasazu ni Guigui Iku",
@@ -103,6 +108,7 @@ export default [
     "last_post": "en curso"
   },
   {
+    "id": 6,
     "titles": [
       "Fushi no Kami",
       "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
@@ -122,6 +128,7 @@ export default [
     "background": "https://1.bp.blogspot.com/-ABvbYYaLx5E/YOtrsbMIJAI/AAAAAAAAYUs/2yiUYXbvI0s_Eq1yKw0KF3vkXt1cgtLcACLcBGAsYHQ/s1200/Fushi%2Bno%2BKami%2B%257E%2BHenkyou%2Bkara%2BHajimeru%2BBunmei%2BSaiseiki%2B%257E%2B%2528Novela%2BLigera%2Ben%2Bespa%25C3%25B1ol%2529.jpg"
   },
   {
+    "id": 7,
     "titles": [
       "Mushoku Tensei",
       "Isekai Ittara Honki Dasu (NW)",
@@ -140,6 +147,7 @@ export default [
     "last_post": ""
   },
   {
+    "id": 8,
     "titles": [
       "Genjitsushugisha no Oukokukaizouki",
       "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
@@ -159,6 +167,7 @@ export default [
     "background": ""
   },
   {
+    "id": 9,
     "titles": [
       "CHILLIN' IN ANOTHER WORLD",
       "-",
@@ -177,6 +186,7 @@ export default [
     "last_post": ""
   },
   {
+    "id": 10,
     "titles": [
       "Nidome no Yuusha",
       "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",

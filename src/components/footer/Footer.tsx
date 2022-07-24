@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import FaIcon from "react-native-vector-icons/FontAwesome";
 import FoIcon from "react-native-vector-icons/Fontisto";
-import { ToastAndroid } from "react-native";
-import { Dimensions } from "react-native";
+import { ToastAndroid, Dimensions } from "react-native";
+import { useNavigate } from "react-router-native";
 
 const iconSize = 25;
 const iconColor = "#000";
@@ -12,12 +12,17 @@ const isTable = screen.width > 500;
 const iconRoundSize = isTable ? 18 : 10;
 
 function Footer() {
-  console.log("");
+  const navegate = useNavigate();
+  const onHome = () => {
+    navegate("/");
+    ToastAndroid.show("HOME", 1000);
+    console.log("HOME");
+  };
 
   return (
     <View style={styles.footer_container}>
       <View style={styles.footer_box}>
-        <View onTouchEnd={() => ToastAndroid.show("HOME", 1000)}>
+        <View onTouchEnd={onHome}>
           <FaIcon
             style={styles.footer_icon}
             name="home"

@@ -5,8 +5,11 @@ import { Dimensions, ToastAndroid } from "react-native";
 import { useNavigate } from "react-router-native";
 
 const screen = Dimensions.get("screen");
+const MARCO_DE_LIBRO_COLOR = "#eee";
 
 function LigthNovelItem(props: LigthNovel) {
+  const navegate = useNavigate();
+
   const [showImage, setShowImage] = useState({
     showDefault: true,
     error: false
@@ -16,10 +19,15 @@ function LigthNovelItem(props: LigthNovel) {
     ? require("../../assets/not_found.jpg")
     : { uri: props.image };
 
+  const onTouchEndBookImage = (id: number) => {
+    ToastAndroid.show(`${id}`, 2500);
+    navegate(`/details/${id}`);
+  };
+
   return (
     <View
       onTouchEnd={() => {
-        onTouchEndBookImage(props.titles[0]);
+        onTouchEndBookImage(props.id);
       }}
     >
       <View style={styles.lnList_book}>
@@ -35,12 +43,6 @@ function LigthNovelItem(props: LigthNovel) {
     </View>
   );
 }
-const onTouchEndBookImage = (title: string) => {
-  let navegar = useNavigate();
-
-  ToastAndroid.show(title, 2500);
-  console.log("Title: " + title);
-};
 
 const imageWith = screen.width / 2.2;
 
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     // color: "#fff",
   },
   lnList_book: {
-    backgroundColor: "#eee",
+    backgroundColor: MARCO_DE_LIBRO_COLOR,
     paddingBottom: 15,
     paddingTop: 15,
     borderRadius: 10

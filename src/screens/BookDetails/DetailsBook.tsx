@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -6,15 +6,13 @@ import {
   ScrollView,
   ToastAndroid
 } from "react-native";
-import { useParams } from "react-router-native";
+import { useNavigate, useParams } from "react-router-native";
 import Constants from "expo-constants";
-import { LigthNovel } from "../../domain/models/ligthNovel";
 import { Dimensions } from "react-native";
 import TextStyled from "../../components/text/TextStyle";
-const notFoundImage = require("../../assets/not_found.jpg");
 import MIIcon from "react-native-vector-icons/MaterialIcons";
-import data from "../../utils/collections";
 import Footer from "../../components/footer/Footer";
+import useRepositoryBook from "../../hooks/useRepositoryBook";
 
 const screen = Dimensions.get("screen");
 const isTable = screen.width > 500;
@@ -23,115 +21,113 @@ const MARCO_DE_LIBRO_COLOR = "#eee";
 // TODO: Los volumenes deberian ser una array con los titulos
 
 function DetailsBook() {
-  const params = useParams();
-  const [bookImage, setBookImage] = useState<any>(notFoundImage);
-  const [book, setBook] = useState<LigthNovel>({} as LigthNovel);
-
-  const findBook = async (id: string) => {
-    const resultado = new Promise<LigthNovel>((resolve, _) => {
-      setTimeout(() => {
-        const result = data.find((book) => book.id === Number(id))!;
-        resolve(result);
-      }, 1500);
-    });
-    const bookFound = await resultado;
-    setBookImage({ uri: bookFound.image });
-    setBook(bookFound);
-  };
-
-  useEffect(() => {
-    const { book_id } = params;
-
-    findBook(book_id!);
-  }, []);
+  const { book_id } = useParams();
+  const { book, bookImage } = useRepositoryBook(book_id!);
 
   return (
     <>
       <ScrollView style={styles.detailt_container}>
-        <View style={{ marginHorizontal: 15 }}>
-          <View style={styles.detailt_row1}>
-            <View style={styles.detail_wrap}>
-              <Image
-                style={styles.detailt_image}
-                source={bookImage}
-                resizeMode="contain"
-              />
-            </View>
+        {book && (
+          <View style={{ marginHorizontal: 15 }}>
+            <View style={styles.detailt_row1}>
+              <View style={styles.detail_wrap}>
+                <Image
+                  style={styles.detailt_image}
+                  source={bookImage}
+                  resizeMode="contain"
+                />
+              </View>
 
-            <View
-              style={{
-                padding: 15,
-                width: widthRow1Details
-              }}
-            >
-              <TextStyled
-                numberOfLines={2}
-                type="h1"
-                style={styles.detail_title}
+              <View
+                style={{
+                  padding: 15,
+                  width: widthRow1Details
+                }}
               >
-                {book.titles && (book.titles[1] || book.titles[0])}
-              </TextStyled>
-
-              <TextStyled>
-                <TextStyled fontWeight="700">Generos:</TextStyled>
-                {book.genders &&
-                  " " + book.genders.toString().replace(",", ", ")}
-              </TextStyled>
-              <TextStyled numberOfLines={1}>
-                <TextStyled fontWeight="700">Autor: </TextStyled>
-                {book.author}
-              </TextStyled>
-              <TextStyled>
-                <TextStyled fontWeight="700">Volumenes: </TextStyled>
-                {book.volumes}
-              </TextStyled>
-              {book.last_post != "" && (
-                <TextStyled>
-                  <TextStyled fontWeight="700">Estado: </TextStyled>
-                  {book.last_post}
+                <TextStyled
+                  numberOfLines={2}
+                  type="h1"
+                  style={styles.detail_title}
+                >
+                  {book.titles && (book.titles[1] || book.titles[0])}
                 </TextStyled>
-              )}
+
+                <TextStyled>
+                  <TextStyled fontWeight="700">Generos:</TextStyled>
+                  {book.genders &&
+                    " " + book.genders.toString().replace(",", ", ")}
+                </TextStyled>
+                <TextStyled numberOfLines={1}>
+                  <TextStyled fontWeight="700">Autor: </TextStyled>
+                  {book.author}
+                </TextStyled>
+                <TextStyled>
+                  <TextStyled fontWeight="700">Volumenes: </TextStyled>
+                  {book.volumes}
+                </TextStyled>
+                {book.last_post != "" && (
+                  <TextStyled>
+                    <TextStyled fontWeight="700">Estado: </TextStyled>
+                    {book.last_post}
+                  </TextStyled>
+                )}
+              </View>
+            </View>
+
+            {book.synopsis && (
+              <View style={styles.detailt_row2}>
+                <TextStyled style={styles.detail_synopsis} type="h2">
+                  {book.synopsis}
+                </TextStyled>
+              </View>
+            )}
+
+            <View style={styles.detailt_row3}>
+              <View style={styles.row3_title}>
+                <TextStyled style={styles.row3_title_text} type="h1">
+                  Volumenes
+                </TextStyled>
+              </View>
+              <View style={styles.row3_volumenesList}>
+                {book.volumes &&
+                  [...Array(Number(book.volumes)).keys()].map((volume, i) => (
+                    <VolumenItem
+                      key={i}
+                      bookId={book.id.toString()}
+                      volume={volume.toString()}
+                    />
+                  ))}
+              </View>
             </View>
           </View>
-
-          {book.synopsis && (
-            <View style={styles.detailt_row2}>
-              <TextStyled style={styles.detail_synopsis} type="h2">
-                {book.synopsis}
-              </TextStyled>
-            </View>
-          )}
-
-          <View style={styles.detailt_row3}>
-            <View style={styles.row3_title}>
-              <TextStyled style={styles.row3_title_text} type="h1">
-                Volumenes
-              </TextStyled>
-            </View>
-            <View style={styles.row3_volumenesList}>
-              {book.volumes &&
-                [...Array(Number(book.volumes)).keys()].map((volumen, i) => (
-                  <VolumenItem key={i} volumen={volumen.toString()} />
-                ))}
-            </View>
-          </View>
-        </View>
+        )}
       </ScrollView>
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }
 
-const VolumenItem = ({ volumen }: { volumen: string }) => {
+const VolumenItem = ({
+  bookId,
+  volume,
+  page = "1"
+}: {
+  bookId: string;
+  volume: string;
+  page?: string;
+}) => {
+  const navegate = useNavigate();
   return (
     <View
-      onTouchEnd={() =>
-        ToastAndroid.show("Volumen " + (Number(volumen) + 1).toString(), 1000)
-      }
+      onTouchEnd={() => {
+        const volumeSelected = (Number(volume) + 1).toString();
+        ToastAndroid.show("Volumen " + volumeSelected, 1000);
+        navegate(`/reader/${bookId}/${volumeSelected}/${page}`);
+      }}
       style={styles.row3_volumenesList_item}
     >
       <View style={{ backgroundColor: "white" }}>
-        <TextStyled type="h2">Volumen: {Number(volumen) + 1}</TextStyled>
+        <TextStyled type="h2">Volumen: {Number(volume) + 1}</TextStyled>
       </View>
       <View></View>
       <MIIcon style={styles.volumenList_item_icon} name="read-more"></MIIcon>

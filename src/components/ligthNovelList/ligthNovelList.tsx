@@ -1,19 +1,22 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { ICollection } from "../../domain/models/ligthNovel";
+import { ICollection } from "../../domain/models/collection-model";
 import LigthNovelItem from "../ligthNovelItem/LigthNovelItem";
 import { useQuery } from "@apollo/client";
 import { GET_COLLECTION_PAGINATED } from "../../api/graphql/gql/collection.gql";
 import { IQueryResult } from "../../domain/models/response/queryResult.response";
 
 function LigthNovelList() {
-  const { data, loading, error } = useQuery<IQueryResult<ICollection[]>, any>(GET_COLLECTION_PAGINATED, {
-    variables: {
-      input: {
-        offset: null,
-        limit: null
+  const { data, loading, error } = useQuery<IQueryResult<ICollection[]>, any>(
+    GET_COLLECTION_PAGINATED,
+    {
+      variables: {
+        input: {
+          offset: null,
+          limit: null
+        }
       }
     }
-  });
+  );
 
   // TODO: CREAR SPINNER
   if (loading) return <Text>Loading...</Text>;
@@ -43,8 +46,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "#444"
   },
   ln_columns: {
-    justifyContent: "space-evenly",
-    marginBottom: 15
+    justifyContent: "space-evenly", //Los lados no tiene tamaño de margen ya que tablet se veria afectado
+    marginBottom: 15,
   }
 });
 

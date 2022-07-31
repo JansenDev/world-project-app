@@ -11,18 +11,57 @@ import Footer from "../../components/footer/Footer";
 import Constants from "expo-constants";
 import TextStyled from "../../components/text/TextStyle";
 import useRepositoryVolume from "../../hooks/useRepositoryVolume";
+import { useQuery } from "@apollo/client";
+import { GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER } from "../../api/graphql/gql/collection.gql";
+import { useParams } from "react-router-native";
+import { IQueryResult } from "../../domain/models/response/queryResult.response";
+import { IPageContent } from "../../domain/models/volumeLigthNovel";
 
 const { width: widthScreen, height: heightScreen } = Dimensions.get("screen");
 const isTable = widthScreen > 500;
 
 function Reader() {
-  const { volumeFound } = useRepositoryVolume();
+  // const { volumeFound } = useRepositoryVolume();
+  const { book_id, book_volume, book_pageNumber = "1" } = useParams();
+
+  const {
+    data = {},
+    loading,
+    error
+  } = useQuery<IQueryResult<IPageContent[]>, any>(
+    GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER,
+    {
+      variables: {
+        input: {
+          volume_number: Number(book_volume),
+          id_collection: book_id,
+          offset: null,
+          limit: null
+        }
+      }
+    }
+  );
+
+  if (loading)
+    return (
+      <TextStyled style={{ paddingTop: Constants.statusBarHeight }}>
+        Loading...
+      </TextStyled>
+    );
+  if (error) return <TextStyled>Error:{error}</TextStyled>;
+  console.log("book_id, book_volume");
+  console.log(book_id, book_volume);
+  if (!loading) {
+    console.log(data!.getPagesByIdCollectionAndVolumeNumber);
+  }
+
+  const { getPagesByIdCollectionAndVolumeNumber: volumeFound = null } = data;
 
   return (
     <>
       <ScrollView style={{ marginTop: Constants.statusBarHeight }}>
         <View style={styles.reader_container}>
-          {volumeFound && (
+          {data && volumeFound && (
             <>
               {/* <TextStyled>volumeId: {volumeFound.volumeId}</TextStyled>
               <TextStyled>pagesCurrent: {volumeFound.pagesCurrent}</TextStyled>
@@ -34,17 +73,22 @@ function Reader() {
                   (volumeFound.pagesCurrent * 100) / volumeFound.pagesTotal}
                 %
               </TextStyled> */}
-              {volumeFound.pages.map((page, index) => (
+
+              {volumeFound.map((page, index) => (
                 <View key={index} style={styles.reader_pages}>
-                  {page.image !== "" && (
+                  {/* START IMAGE */}
+                  {page.image !== "" && page.image && (
                     <Image
                       style={styles.pages_image}
                       source={{ uri: page.image }}
                       resizeMode="stretch"
                     />
                   )}
+                  {/* END IMAGE */}
 
-                  {page.index && (
+                  {/* START INDEX */}
+
+                  {!page.image && !(page.text) && (
                     <>
                       <TextStyled
                         style={{ textAlign: "center" }}
@@ -54,25 +98,30 @@ function Reader() {
                         Indice
                       </TextStyled>
                       <TextStyled style={styles.reader_pageNumber}>
-                        Page: {page.pageNumber}
+                        Page: {page.page_number}
                       </TextStyled>
                     </>
                   )}
+                  {/* END INDEX */}
 
-                  {/* !texto */}
-                  {page.title.title && (
+                  {/* START TITLE */}
+                  {page.title && (
                     <TextStyled style={styles.pages_title}>
-                      {page.title.tag}: {page.title.title}
+                      {page.chapter_type}: {page.title}
                     </TextStyled>
                   )}
-                  {page.text !== "" && (
-                    <>
+                  {/* END TITLE */}
+
+                  {/* START TEXT */}
+                  {page.text && page.text !== "" && !page.image && (
+                    <View style={styles.render_text}>
                       <TextStyled type="h2">{page.text.trim()}</TextStyled>
                       <TextStyled style={styles.reader_pageNumber}>
-                        Page: {page.pageNumber}
+                        Page: {page.page_number}
                       </TextStyled>
-                    </>
+                    </View>
                   )}
+                  {/* END TEXT */}
                 </View>
               ))}
             </>
@@ -108,7 +157,11 @@ const styles = StyleSheet.create({
   },
   reader_pageNumber: {
     textAlign: "right",
-    opacity:.6
+    opacity: 0.6,
+    marginBottom: 50 //
+  },
+  render_text:{
+    paddingHorizontal:10
   }
 });
 

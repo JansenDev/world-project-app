@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { ICollection } from "../../domain/models/ligthNovel";
+import { ICollection } from "../../domain/models/collection-model";
 import { Dimensions, ToastAndroid } from "react-native";
 import { useNavigate } from "react-router-native";
 

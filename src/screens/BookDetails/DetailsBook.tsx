@@ -24,7 +24,8 @@ function DetailsBook() {
   const { book_id } = useParams();
   const { book, bookImage, loading, error } = useRepositoryBook(book_id!);
 
-  if (loading) return <TextStyled style={styles.detailt_container}>Loading...</TextStyled>;
+  if (loading)
+    return <TextStyled style={styles.detailt_container}>Loading...</TextStyled>;
   if (error) return null;
 
   return (
@@ -52,7 +53,7 @@ function DetailsBook() {
                   type="h1"
                   style={styles.detail_title}
                 >
-                  {book.titles && (book.titles[1] || book.titles[0])}
+                  {book.name}
                 </TextStyled>
 
                 <TextStyled>

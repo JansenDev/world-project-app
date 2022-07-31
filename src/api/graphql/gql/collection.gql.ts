@@ -7,7 +7,7 @@ export const GREETING = gql`
   }`;
 
 export const GET_COLLECTION_PAGINATED = gql`
-  query ($input: PaginatedInput) {
+  query GetCollectionsPaginated($input: PaginatedInput) {
     getCollectionsPaginated(input: $input) {
       collection_id
       popularity
@@ -21,7 +21,7 @@ export const GET_COLLECTION_PAGINATED = gql`
 
 
 export const GET_COLLECTION_DETAIL_BY_ID = gql`
-query ($idCollection: ID) {
+query GetCollectionDetailedById($idCollection: ID) {
   getCollectionDetailedById(idCollection: $idCollection) {
     collection_id
     name
@@ -40,5 +40,15 @@ query ($idCollection: ID) {
     volumes
     genders
   }
-}
-  `
+}`;
+export const GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER = gql`
+  query GetPagesByIdCollectionAndVolumeNumber($input: PageContentInput) {
+    getPagesByIdCollectionAndVolumeNumber(input: $input) {
+      page_number
+      image
+      text
+      chapter_type
+      title
+      book_id
+    }
+}`;

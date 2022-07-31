@@ -1,25 +1,24 @@
 import { useQuery } from "@apollo/client";
 import { GET_COLLECTION_DETAIL_BY_ID } from "../api/graphql/gql/collection.gql";
 import { ICollectionDetail } from "../domain/models/collectionDetail.model";
-// const notFoundImage = require("../assets/not_found.jpg");
+import { IQueryResult } from "../domain/models/response/queryResult.response";
 
 function useRepositoryBook(idCollection: string) {
-  const {
-    data = {},
-    loading,
-    error
-  } = useQuery(GET_COLLECTION_DETAIL_BY_ID, {
+  const { data, loading, error } = useQuery<
+    IQueryResult<ICollectionDetail>,
+    { idCollection: string }
+  >(GET_COLLECTION_DETAIL_BY_ID, {
     variables: {
       idCollection
     }
   });
 
-  const { getCollectionDetailedById = null } = data;
+  const { getCollectionDetailedById = null } = data || {};
 
   if (!loading)
     return {
-      book: getCollectionDetailedById as ICollectionDetail,
-      bookImage: { uri: getCollectionDetailedById.image },
+      book: getCollectionDetailedById,
+      bookImage: { uri: getCollectionDetailedById!.image },
       loading,
       error
     };

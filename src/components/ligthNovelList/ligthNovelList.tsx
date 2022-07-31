@@ -1,13 +1,12 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { ICollection } from "../../domain/models/ligthNovel";
 import LigthNovelItem from "../ligthNovelItem/LigthNovelItem";
-import dataJSON from "../../utils/collections";
 import { useQuery } from "@apollo/client";
 import { GET_COLLECTION_PAGINATED } from "../../api/graphql/gql/collection.gql";
 import { IQueryResult } from "../../domain/models/response/queryResult.response";
 
 function LigthNovelList() {
-  const { data, loading, error } = useQuery(GET_COLLECTION_PAGINATED, {
+  const { data, loading, error } = useQuery<IQueryResult<ICollection[]>, any>(GET_COLLECTION_PAGINATED, {
     variables: {
       input: {
         offset: null,

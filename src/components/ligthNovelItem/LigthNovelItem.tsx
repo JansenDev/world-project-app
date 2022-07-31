@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { LigthNovel } from "../../domain/models/ligthNovel";
+import { ICollection } from "../../domain/models/ligthNovel";
 import { Dimensions, ToastAndroid } from "react-native";
 import { useNavigate } from "react-router-native";
 
 const screen = Dimensions.get("screen");
 const MARCO_DE_LIBRO_COLOR = "#eee";
 
-function LigthNovelItem(props: LigthNovel) {
+function LigthNovelItem(props: ICollection) {
   const navegate = useNavigate();
 
   const [showImage, setShowImage] = useState({
@@ -19,7 +19,7 @@ function LigthNovelItem(props: LigthNovel) {
     ? require("../../assets/not_found.jpg")
     : { uri: props.image };
 
-  const onTouchEndBookImage = (id: number) => {
+  const onTouchEndBookImage = (id: string) => {
     ToastAndroid.show(`${id}`, 2500);
     navegate(`/details/${id}`);
   };
@@ -27,7 +27,7 @@ function LigthNovelItem(props: LigthNovel) {
   return (
     <View
       onTouchEnd={() => {
-        onTouchEndBookImage(props.id);
+        onTouchEndBookImage(props.collection_id);
       }}
     >
       <View style={styles.lnList_book}>
@@ -38,7 +38,7 @@ function LigthNovelItem(props: LigthNovel) {
         />
       </View>
       <View style={styles.lnList_title}>
-        <Text style={styles.lnList_title__text}>{props.titles[0]}</Text>
+        <Text style={styles.lnList_title__text}>{props.name}</Text>
       </View>
     </View>
   );

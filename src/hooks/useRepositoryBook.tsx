@@ -1,28 +1,35 @@
-import { useEffect, useState } from "react";
-import { LigthNovel } from "../domain/models/ligthNovel";
-const notFoundImage = require("../assets/not_found.jpg");
-import data from "../utils/collections";
+import { useQuery } from "@apollo/client";
+import { GET_COLLECTION_DETAIL_BY_ID } from "../api/graphql/gql/collection.gql";
+import { ICollectionDetail } from "../domain/models/collectionDetail.model";
+// const notFoundImage = require("../assets/not_found.jpg");
 
-function useRepositoryBook(book_id: string) {
-  const [bookImage, setBookImage] = useState<any>(notFoundImage);
-  const [book, setBook] = useState<LigthNovel | undefined>(undefined);
+function useRepositoryBook(idCollection: string) {
+  const {
+    data = {},
+    loading,
+    error
+  } = useQuery(GET_COLLECTION_DETAIL_BY_ID, {
+    variables: {
+      idCollection
+    }
+  });
 
-  const findBook = async (id: string) => {
-    const resultado = new Promise<LigthNovel>((resolve, _) => {
-      setTimeout(() => {
-        const result = data.find((book) => book.id === Number(id))!;
-        resolve(result);
-      }, 100);
-    });
-    const bookFound = await resultado;
-    setBookImage({ uri: bookFound.image });
-    setBook(bookFound);
+  const { getCollectionDetailedById = null } = data;
+
+  if (!loading)
+    return {
+      book: getCollectionDetailedById as ICollectionDetail,
+      bookImage: { uri: getCollectionDetailedById.image },
+      loading,
+      error
+    };
+
+  return {
+    book: {} as ICollectionDetail,
+    bookImage: require("../assets/not_found.jpg"),
+    loading,
+    error
   };
-
-  useEffect(() => {
-    findBook(book_id!);
-  }, []);
-  return { book, bookImage };
 }
 
 export default useRepositoryBook;

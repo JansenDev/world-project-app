@@ -22,7 +22,10 @@ const MARCO_DE_LIBRO_COLOR = "#eee";
 
 function DetailsBook() {
   const { book_id } = useParams();
-  const { book, bookImage } = useRepositoryBook(book_id!);
+  const { book, bookImage, loading, error } = useRepositoryBook(book_id!);
+
+  if (loading) return <TextStyled style={styles.detailt_container}>Loading...</TextStyled>;
+  if (error) return null;
 
   return (
     <>
@@ -93,7 +96,7 @@ function DetailsBook() {
                   [...Array(Number(book.volumes)).keys()].map((volume, i) => (
                     <VolumenItem
                       key={i}
-                      bookId={book.id.toString()}
+                      bookId={book.collection_id.toString()}
                       volume={volume.toString()}
                     />
                   ))}

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  BackHandler,
   Dimensions,
   Image,
   ScrollView,
@@ -10,12 +11,33 @@ import Footer from "../../components/footer/Footer";
 import Constants from "expo-constants";
 import TextStyled from "../../components/text/TextStyle";
 import useRepositoryVolume from "../../hooks/useRepositoryVolume";
+import { useNavigate } from "react-router-native";
 
 const { width: widthScreen, height: heightScreen } = Dimensions.get("screen");
 const isTable = widthScreen > 500;
 
 function Reader() {
   const { data = {}, error, loading } = useRepositoryVolume();
+
+
+
+  const navegate = useNavigate();
+
+  function handleBackButtonClick() {
+    navegate(-1);
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, []);
 
 
   if (loading) {

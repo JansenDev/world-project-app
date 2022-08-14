@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   Image,
   ScrollView,
-  ToastAndroid
+  ToastAndroid,
+  BackHandler,
 } from "react-native";
 import { useNavigate, useParams } from "react-router-native";
 import Constants from "expo-constants";
@@ -23,6 +24,24 @@ const MARCO_DE_LIBRO_COLOR = "#eee";
 function DetailsBook() {
   const { book_id } = useParams();
   const { book, bookImage, loading, error } = useRepositoryBook(book_id!);
+  const [exitApp, setExitApp] = useState(0);
+  const navegate = useNavigate();
+
+  function handleBackButtonClick() {
+    navegate(-1);
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, []);
 
   if (loading)
     return <TextStyled style={styles.detailt_container}>Loading...</TextStyled>;
@@ -45,7 +64,7 @@ function DetailsBook() {
               <View
                 style={{
                   padding: 15,
-                  width: widthRow1Details
+                  width: widthRow1Details,
                 }}
               >
                 <TextStyled
@@ -114,7 +133,7 @@ function DetailsBook() {
 const VolumenItem = ({
   bookId,
   volume,
-  page = "1"
+  page = "1",
 }: {
   bookId: string;
   volume: string;
@@ -149,34 +168,34 @@ const styles = StyleSheet.create({
   detailt_container: {
     marginTop: Constants.statusBarHeight,
     // backgroundColor: "yellow",
-    flex: 1
+    flex: 1,
   },
   detailt_row1: {
     // backgroundColor: "cyan",
     flexDirection: "row",
-    marginTop: 25
+    marginTop: 25,
   },
   detailt_image: {
     width: widthImage,
     height: heigthImage,
-    backgroundColor: MARCO_DE_LIBRO_COLOR
+    backgroundColor: MARCO_DE_LIBRO_COLOR,
   },
   detail_wrap: {
     padding: paddingWrapImage,
     backgroundColor: MARCO_DE_LIBRO_COLOR,
-    borderRadius: 10
+    borderRadius: 10,
   },
   detail_title: {
     // backgroundColor: "green",
     fontWeight: "bold",
     flexWrap: "wrap",
-    marginBottom: 10
+    marginBottom: 10,
   },
   detailt_row2: {
     // padding: 10
     // backgroundColor: "green",
     // height: 75
-    marginTop: 10
+    marginTop: 10,
   },
   detail_synopsis: {
     flexWrap: "wrap",
@@ -184,7 +203,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     opacity: 0.6,
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   detailt_row3: {
     // backgroundColor: "red",
@@ -192,14 +211,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "rgba(0, 0, 0, 0.3)",
     borderWidth: 1,
-    marginBottom: 15
+    marginBottom: 15,
   },
   row3_title: {
     backgroundColor: "cyan",
     height: isTable ? 50 : 35,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 5
+    borderRadius: 5,
   },
   row3_title_text: {},
   row3_volumenesList: {
@@ -213,7 +232,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    position: "relative"
+    position: "relative",
   },
   volumenList_item_icon: {
     position: "absolute",
@@ -221,8 +240,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "white",
     // alignItems:"center",
     top: "50%",
-    right: 15
-  }
+    right: 15,
+  },
 });
 
 export default DetailsBook;

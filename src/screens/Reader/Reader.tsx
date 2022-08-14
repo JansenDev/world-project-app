@@ -1,60 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Dimensions,
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   View
 } from "react-native";
 import Footer from "../../components/footer/Footer";
 import Constants from "expo-constants";
 import TextStyled from "../../components/text/TextStyle";
 import useRepositoryVolume from "../../hooks/useRepositoryVolume";
-import { useQuery } from "@apollo/client";
-import { GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER } from "../../api/graphql/gql/collection.gql";
-import { useParams } from "react-router-native";
-import { IQueryResult } from "../../domain/models/response/queryResult.response";
-import { IPageContent } from "../../domain/models/volumeLigthNovel";
 
 const { width: widthScreen, height: heightScreen } = Dimensions.get("screen");
 const isTable = widthScreen > 500;
 
 function Reader() {
-  // const { volumeFound } = useRepositoryVolume();
-  const { book_id, book_volume, book_pageNumber = "1" } = useParams();
+  const { data = {}, error, loading } = useRepositoryVolume();
 
-  const {
-    data = {},
-    loading,
-    error
-  } = useQuery<IQueryResult<IPageContent[]>, any>(
-    GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER,
-    {
-      variables: {
-        input: {
-          volume_number: Number(book_volume),
-          id_collection: book_id,
-          offset: null,
-          limit: null
-        }
-      }
-    }
-  );
 
-  if (loading)
+  if (loading) {
     return (
       <TextStyled style={{ paddingTop: Constants.statusBarHeight }}>
         Loading...
       </TextStyled>
     );
-  if (error) return <TextStyled>Error:{error}</TextStyled>;
-  console.log("book_id, book_volume");
-  console.log(book_id, book_volume);
-  if (!loading) {
-    console.log(data!.getPagesByIdCollectionAndVolumeNumber);
   }
-
+  if (error) return <TextStyled>Error:{error}</TextStyled>;
   const { getPagesByIdCollectionAndVolumeNumber: volumeFound = null } = data;
 
   return (
@@ -88,7 +59,7 @@ function Reader() {
 
                   {/* START INDEX */}
 
-                  {!page.image && !(page.text) && (
+                  {!page.image && !page.text && (
                     <>
                       <TextStyled
                         style={{ textAlign: "center" }}
@@ -126,7 +97,7 @@ function Reader() {
               ))}
             </>
           )}
-          {!volumeFound && <Text>Aun no se carga Novela</Text>}
+          {!volumeFound && <TextStyled>Aun no se carga Novela</TextStyled>}
         </View>
       </ScrollView>
       <Footer />
@@ -158,10 +129,10 @@ const styles = StyleSheet.create({
   reader_pageNumber: {
     textAlign: "right",
     opacity: 0.6,
-    marginBottom: 50 //
+    marginBottom: 40 //
   },
-  render_text:{
-    paddingHorizontal:10
+  render_text: {
+    paddingHorizontal: 10
   }
 });
 

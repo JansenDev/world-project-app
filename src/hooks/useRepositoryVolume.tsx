@@ -1,43 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-native";
-import { LigthNovelVolume } from "../domain/models/volumeLigthNovel";
-import volumeData from "../utils/chapters";
+import { GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER } from "../api/graphql/gql/collection.gql";
+import { IQueryResult } from "../domain/models/response/queryResult.response";
+import {
+  IPageContent
+} from "../domain/models/volumeLigthNovel";
 
 function useRepositoryVolume() {
-    const { book_id = "", book_volume = "", book_pageNumber = "1" } = useParams();
-  const [volumeFound, setVolumeFound] = useState<LigthNovelVolume | undefined>(
-    undefined
+  const { book_id = "", book_volume = "", book_pageNumber = "1" } = useParams();
+  const {
+    data = {},
+    loading,
+    error
+  } = useQuery<IQueryResult<IPageContent[]>, any>(
+    GET_PAGES_BY_ID_COLLECTION_AND_VOLUME_NUMBER,
+    {
+      variables: {
+        input: {
+          volume_number: Number(book_volume),
+          id_collection: book_id,
+          offset: null,
+          limit: null
+        }
+      }
+    }
   );
 
-  const findBookVolume = async (
-    bookId: number,
-    volume: number,
-    bookPageNumber: number
-  ) => {
-    const repositoryDB: LigthNovelVolume[] = volumeData;
-    const dataPromise: Promise<LigthNovelVolume | undefined> = new Promise(
-      (resolve, _) => {
-        setTimeout(() => {
-          const volumeFound = repositoryDB.find(
-            (vol) => vol.volume === volume && vol.bookId === bookId
-          )!;
-          resolve(volumeFound);
-        }, 1000);
-      }
-    );
+  if (!loading) return { data, loading, error };
 
-    const data = await dataPromise;
-    setVolumeFound(data!);
+  return {
+    data: {},
+    loading,
+    error
   };
-  useEffect(() => {
-    findBookVolume(
-      Number(book_id),
-      Number(book_volume),
-      Number(book_pageNumber)
-    );
-  }, []);
-
-  return { volumeFound };
 }
 
 export default useRepositoryVolume;
